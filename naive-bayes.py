@@ -86,10 +86,7 @@ def createPosAndNegSets():
   numNegReviews = count
   return
 
-def testClassifiers():
-  totalPos = len(posTest)
-  totalNeg = len(negTest)
-  
+def testClassifiers():  
   truePos = 0
   falsePos = 0
   for review in posTest:
