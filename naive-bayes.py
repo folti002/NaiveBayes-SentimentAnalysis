@@ -1,4 +1,3 @@
-import sys
 import os
 import re
 import nltk.lm
@@ -96,6 +95,8 @@ def testClassifiers():
       # FIX - ADD SMOOTHING TO PREVENT ERROR WHERE WORD DOESN'T APPEAR IN ONE OF THE TRAINING SETS
       # if w not in vocab:
       #   continue
+
+      # If the current word isn't in our vocabulary, we will simply ignore it and move on
       if w not in vocab:
         continue
 
@@ -124,6 +125,7 @@ def testClassifiers():
       # if w not in vocab:
       #   continue
 
+      # If the current word isn't in our vocabulary, we will simply ignore it and move on
       if w not in vocab:
         continue
 
@@ -144,6 +146,7 @@ def testClassifiers():
   print(str(truePos) + "\t" + str(falsePos))
   print(str(falseNeg) + "\t" + str(trueNeg))
 
+  # Calculate precision, recall, and f-score based on our classifications and print to the console
   precision = truePos / (truePos + falsePos)
   precisionPercentage = "{:.1%}".format((precision))
   recall = truePos / (truePos + falseNeg)
