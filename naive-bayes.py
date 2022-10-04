@@ -1,5 +1,6 @@
 import os
 import re
+import math
 import nltk.lm
 from nltk.corpus import stopwords
 
@@ -89,8 +90,8 @@ def testClassifiers():
   truePos = 0
   falsePos = 0
   for review in posTest:
-    productPos = (float(numPosReviews)) / (numPosReviews + numNegReviews)
-    productNeg = (float(numNegReviews)) / (numPosReviews + numNegReviews)
+    productPos = math.log((float(numPosReviews)) / (numPosReviews + numNegReviews))
+    productNeg = math.log((float(numNegReviews)) / (numPosReviews + numNegReviews))
     for w in review:
       # FIX - ADD SMOOTHING TO PREVENT ERROR WHERE WORD DOESN'T APPEAR IN ONE OF THE TRAINING SETS
       # if w not in vocab:
@@ -107,9 +108,9 @@ def testClassifiers():
       if w in negTrain:
         negCount = negTrain.get(w)
 
-      productPos = productPos * ((posCount + 1) / (posWordCount + len(vocab))) 
-      productNeg = productNeg * ((negCount + 1) / (negWordCount + len(vocab)))
-    print(productPos, productNeg)
+      productPos = productPos + math.log(((posCount + 1) / (posWordCount + len(vocab))))
+      productNeg = productNeg + math.log(((negCount + 1) / (negWordCount + len(vocab))))
+    # print(productPos, productNeg)
     if productPos >= productNeg:
       truePos = truePos + 1
     else:
@@ -118,8 +119,8 @@ def testClassifiers():
   trueNeg = 0
   falseNeg = 0
   for review in negTest:
-    productPos = (float(numPosReviews)) / (numPosReviews + numNegReviews)
-    productNeg = (float(numNegReviews)) / (numPosReviews + numNegReviews)
+    productPos = math.log((float(numPosReviews)) / (numPosReviews + numNegReviews))
+    productNeg = math.log((float(numNegReviews)) / (numPosReviews + numNegReviews))
     for w in review:
       # FIX - ADD SMOOTHING TO PREVENT ERROR WHERE WORD DOESN'T APPEAR IN ONE OF THE TRAINING SETS
       # if w not in vocab:
@@ -136,15 +137,12 @@ def testClassifiers():
       if w in negTrain:
         negCount = negTrain.get(w)
 
-      productPos = productPos * ((posCount + 1) / (posWordCount + len(vocab))) 
-      productNeg = productNeg * ((negCount + 1) / (negWordCount + len(vocab)))
+      productPos = productPos + math.log(((posCount + 1) / (posWordCount + len(vocab))))
+      productNeg = productNeg + math.log(((negCount + 1) / (negWordCount + len(vocab))))
     if productPos > productNeg:
       falseNeg = falseNeg + 1
     else:
       trueNeg = trueNeg + 1
-
-  print(str(truePos) + "\t" + str(falsePos))
-  print(str(falseNeg) + "\t" + str(trueNeg))
 
   # Calculate precision, recall, and f-score based on our classifications and print to the console
   precision = truePos / (truePos + falsePos)
@@ -152,16 +150,23 @@ def testClassifiers():
   recall = truePos / (truePos + falseNeg)
   recallPercentage = "{:.1%}".format((recall))
   fscore = (2 * precision * recall) / (precision + recall)
+  print("______________________")
+  print("RESULTS")
   print("Precision:\t", precisionPercentage)
   print("Recall: \t", recallPercentage)
-  print("F-Score:\t", fscore)
+  print("F-Score:\t%6.2f\n" % (fscore))
+
+  print("Confusion matrix:")
+  print(str(truePos) + "\t" + str(falsePos))
+  print(str(falseNeg) + "\t" + str(trueNeg))
 
 def main():
   # First we will create the sets of counts for positive and negative reviews
   print("Creating training and test sets...")
   createPosAndNegSets()
-  print("Positive word count:", posWordCount)
-  print("Negative word count:", negWordCount)
+  print("Training and test sets created!\n")
+  # print("Positive word count:", posWordCount)
+  # print("Negative word count:", negWordCount)
   # Now that we have the sets created, we want to start looking at the test sets to find probabilities
   print("Testing our classifiers...")
   testClassifiers()
