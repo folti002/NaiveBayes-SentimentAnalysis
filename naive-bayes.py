@@ -80,10 +80,12 @@ def createPosAndNegSets():
     count = count + 1
   numPosReviews = count
   count = 0
+  print("Training and test set for positive reviews created!")
   for filename in os.listdir(negDirectory):
     createTrainAndTestSets(negDirectory, filename, count, stopWords)
     count = count + 1
   numNegReviews = count
+  print("Training and test set for positive reviews created!")
   return
 
 def testClassifiers():  
