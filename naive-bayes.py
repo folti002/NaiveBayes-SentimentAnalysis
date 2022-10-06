@@ -1,4 +1,5 @@
 # File Author: Mikkel Folting
+# Date: October 7, 2022
 
 # Results
   # Precision:       83.7%
@@ -45,10 +46,10 @@ def createTrainAndTestSets(directory, filename, count, stopWords):
   file.close()
 
   # Pre-process the corpus, removing unnecessary characters
-  corpus = re.sub("\n", " ", corpus)                  # Remove newline characters
-  corpus = re.sub(r'-+', " ", corpus)                 # Remove any occurrences of - and replace with a space
-  corpus = re.sub(r'[\.?!,;():`"\']', "", corpus)     # Remove punctuation and parantheses
-  words = list(nltk.tokenize.word_tokenize(corpus))   # Tokenize words
+  corpus = re.sub("\n", " ", corpus)                    # Remove newline characters
+  corpus = re.sub(r'-+', " ", corpus)                   # Remove any occurrences of - and replace with a space
+  corpus = re.sub(r'[\.?!,;():`_*"\']', "", corpus)     # Remove punctuation & symbols
+  words = list(nltk.tokenize.word_tokenize(corpus))     # Tokenize words
 
   # Filter out stop words from our list of words
   filteredWords = []
@@ -135,14 +136,7 @@ def testClassifiers():
   falseNeg = 0
   print("Number of positive test reviews:", len(posTest))
   print("Number of negative test reviews:", len(negTest))
-
-  # TODO: REMOVE THIS
-  count = 0
   for review in posTest:
-    # TODO: REMOVE THIS
-    if count > 10:
-      break
-
     productPos = math.log((float(numPosReviews)) / (numPosReviews + numNegReviews))
     productNeg = math.log((float(numNegReviews)) / (numPosReviews + numNegReviews))
     for w in review:
@@ -167,8 +161,6 @@ def testClassifiers():
       truePos = truePos + 1
     else:
       falseNeg = falseNeg + 1
-    #TODO: REMOVE THIS
-    count = count + 1
 
   # Parse through all negative test reviews
   falsePos = 0
