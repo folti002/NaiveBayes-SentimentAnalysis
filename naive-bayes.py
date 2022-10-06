@@ -2,9 +2,9 @@
 # Date: October 7, 2022
 
 # Results
-  # Precision:       83.7%
-  # Recall:          80.0%
-  # F-Score:          0.82
+  # Precision:       83.2%
+  # Recall:          79.2%
+  # F-Score:          0.81
 # How I handled tokens
   # My first step in handling tokens was to remove all stop words. To do this, I used the nltk stopwords list.
   # Later, I ignore words in the test set that we have never seen before because we don't know how to classify them.
