@@ -5,13 +5,6 @@
   # Precision:       83.2%
   # Recall:          79.2%
   # F-Score:          0.81
-# How I handled tokens
-  # My first step in handling tokens was to remove all stop words. To do this, I used the nltk stopwords list.
-  # Later, I ignore words in the test set that we have never seen before because we don't know how to classify them.
-# What smoothing I used
-  # I used Laplace (add-one) smoothing to avoid 0 probabilities when we encountered words that were in one training set but not the other.
-# Any other tricks
-  # I didn't use any other significant tricks to get to my results.
 
 import os
 import re
